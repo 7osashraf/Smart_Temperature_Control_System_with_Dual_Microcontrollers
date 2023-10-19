@@ -1,0 +1,64 @@
+/* 
+ * File:   app.c
+ * Author: ENG HOSAM
+ *
+ * Created on July 4, 2023, 12:50 AM
+ */
+
+
+
+#include "app.h"
+
+
+volatile uint8 rec_uart_data;
+uint16 lm35_res_1, lm35_res_1_celsius = 0;
+uint8 lm35_res_2_txt[7];
+
+
+
+void usart_module_init(){
+    usart_t usart_obj;
+    Std_ReturnType ret = E_NOT_OK;
+    
+    usart_obj.baudrate = 9600;
+    usart_obj.baudrate_gen_gonfig = BAUDRATE_ASYN_8BIT_lOW_SPEED;
+    
+    usart_obj.usart_tx_cfg.usart_tx_enable = EUSART_ASYNCHRONOUS_TX_ENABLE;
+    usart_obj.usart_tx_cfg.usart_tx_interrupt_enable = EUSART_ASYNCHRONOUS_INTERRUPT_TX_DISABLE;
+    usart_obj.usart_tx_cfg.usart_tx_9bit_enable = EUSART_ASYNCHRONOUS_9Bit_TX_DISABLE;
+    
+    usart_obj.usart_rx_cfg.usart_rx_enable = EUSART_ASYNCHRONOUS_RX_ENABLE;
+    usart_obj.usart_rx_cfg.usart_rx_interrupt_enable = EUSART_ASYNCHRONOUS_INTERRUPT_RX_DISABLE;
+    usart_obj.usart_rx_cfg.usart_rx_9bit_enable = EUSART_ASYNCHRONOUS_9Bit_RX_DISABLE;
+    
+    usart_obj.EUSART_TxDefaultInterruptHandler = NULL;
+    usart_obj.EUSART_RxDefaultInterruptHandler = NULL;
+    usart_obj.EUSART_FramingErrorHandler = NULL;
+    usart_obj.EUSART_OverrunErrorHandler = NULL;
+    
+    ret = EUSART_ASYNC_Init(&usart_obj);
+}
+
+uint8 rec_usart_data;
+int main() {
+    
+    Std_ReturnType ret = E_NOT_OK;
+    
+    app_initialize();
+    
+    while(1){
+        
+        
+        ret = EUSART_ASYNC_ReadStringBlocking(lm35_res_2_txt, 7);
+        
+        
+    }
+    return (EXIT_SUCCESS);
+}
+
+void app_initialize(void){
+    Std_ReturnType ret = E_NOT_OK;
+    usart_module_init();
+    
+    
+}
